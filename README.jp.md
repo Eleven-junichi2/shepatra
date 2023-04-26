@@ -2,7 +2,7 @@
 
 [英語(English)](./README.md)
 
-SHE is PAssword TRAnslator
+SHE is the PAssword TRAnslator.
 
 ## 何をしてくれるの？
 

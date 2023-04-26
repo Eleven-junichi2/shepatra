@@ -2,7 +2,7 @@
 
 [Japanese（日本語）](./README.md)
 
-She is password translator.
+SHE is the PAssword TRAnslator.
 
 ## How to use
 
