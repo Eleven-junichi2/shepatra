@@ -11,14 +11,13 @@ import pyperclip
 from scripts.utils import json_to_translation_systems, \
     translation_systems_to_json
 
-RUN_SCRIPT_ON_RELEASE = False
+# RUN_SCRIPT_ON_RELEASE = False
 
 SCRIPT_DIR = Path(__file__).absolute().parent
 PTS_FILENAME = "pts.json"
-if RUN_SCRIPT_ON_RELEASE:
-    PTS_FILEPATH = SCRIPT_DIR / PTS_FILENAME
-else:
-    PTS_FILEPATH = SCRIPT_DIR.parent / PTS_FILENAME
+I18N_DIRNAME = "i18n"
+PTS_FILEPATH = SCRIPT_DIR / PTS_FILENAME
+I18N_DIRPATH = SCRIPT_DIR / I18N_DIRNAME
 
 
 make_her_use_polite_words = False

@@ -1,0 +1,13 @@
+{
+    "standard": {
+        "welcome": "いらっしゃいませ。",
+        "make_selection": "番号を入力して選択してね",
+        "which_algorithm_add_and_layered": "組み合わせたいアルゴリズムは？",
+        "which_trans_system_use": "どの組み合わせを使いたいの",
+        "what_name_trans_system": "名前をつけてください",
+        "input_password": "ハッシュ化パスワードを入力してください",
+        "no_trans_system": "その前に、アルゴリズムを組ませてね",
+        "trans_system_generated": "覚えとくね: ",
+        "password_generated": "その心は、"
+    }
+}
