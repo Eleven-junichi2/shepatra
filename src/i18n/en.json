@@ -8,6 +8,12 @@
         "input_password": "Input password to be hashed",
         "no_trans_system": "I haven't learnt how to password translation, tell me.",
         "trans_system_generated": "I learned a new system: ",
-        "password_generated": "hashed password is "
+        "password_generated": "hashed password is ",
+        "copy_to_clipboard": "(copied to clipboard)",
+        "cancel": "Cancel",
+        "submit": "Submit",
+        "exit": "Exit",
+        "go_to_pts_gen": "Configure her new password translation system",
+        "make_hashed_password": "Make her to translate password"
     }
 }

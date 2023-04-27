@@ -28,9 +28,14 @@ with open(CONFIG_FILEPATH, "r") as f:
 
 LANGUAGE = config["language"]
 
-with open(I18N_DIRPATH / f"{LANGUAGE}.json", "r") as f:
-    navigation_texts_candidates = json.load(f)
-navi_txts = navigation_texts_candidates["standard"]
+with open(I18N_DIRPATH / f"{LANGUAGE}.json", "r", encoding="utf-8") as f:
+    navigation_texts_candidates: dict = json.load(f)
+
+navigation_style = config["navigation_style"]
+if navigation_style not in navigation_texts_candidates.keys():
+    navigation_style = "standard"
+
+navi_txts = navigation_texts_candidates[navigation_style]
 
 algorithms = {
     "sha3-512": hashlib.sha3_512,
@@ -51,8 +56,8 @@ def show_options(options_dict: dict):
 
 
 def edit_password_translation_system():
-    options = {"Cancel": "cancel",
-               "Submit your order": "submit"}
+    options = {navi_txts["cancel"]: "cancel",
+               navi_txts["submit"]: "submit"}
     options |= algorithms
     show_options(options)
     translation_layers = []
@@ -114,11 +119,11 @@ def translate_password():
     for hashfunc in hashfunc_layers:
         password = hashfunc(bytes(password, "utf-8")).hexdigest()
     hashed_password_hex = password
-    click.secho(f"{navi_txts['password_generated']}",
+    click.secho(navi_txts['password_generated'],
                 fg="green")
     click.secho(str(hashed_password_hex),
                 fg="bright_green")
-    click.echo("(copied to clipboard)")
+    click.echo(navi_txts["copy_to_clipboard"])
     pyperclip.copy(str(hashed_password_hex))
 
 
@@ -127,11 +132,11 @@ def cli():
     click.echo(navi_txts["welcome"])
     while True:
         options_on_title = {
-            "exit":
+            navi_txts["exit"]:
             lambda: True,
-            "configure her new password translation system":
+            navi_txts["go_to_pts_gen"]:
             edit_password_translation_system,
-            "make her to translate password":
+            navi_txts["make_hashed_password"]:
             translate_password}
         show_options(options_on_title)
         order_id = click.prompt(
