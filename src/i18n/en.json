@@ -1,0 +1,13 @@
+{
+    "standard": {
+        "welcome": "Welcome.",
+        "make_selection": "Make a selection",
+        "which_algorithm_add_and_layered": "Which algorithm add and layered?",
+        "which_trans_system_use": "Select password translation system",
+        "what_name_trans_system": "Name of new password translation system",
+        "input_password": "Input password to be hashed",
+        "no_trans_system": "I haven't learnt how to password translation, tell me.",
+        "trans_system_generated": "I learned a new system: ",
+        "password_generated": "hashed password is "
+    }
+}
