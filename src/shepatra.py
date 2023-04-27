@@ -2,7 +2,7 @@
 from pathlib import Path
 import hashlib
 import json
-
+import sys
 
 from blake3 import blake3
 import click
@@ -13,7 +13,7 @@ from scripts.utils import json_to_translation_systems, \
 
 # RUN_SCRIPT_ON_RELEASE = False
 
-SCRIPT_DIR = Path(__file__).absolute().parent
+SCRIPT_DIR = Path(sys.argv[0]).absolute().parent
 
 PTS_FILENAME = "pts.json"
 CONFIG_FILENAME = "config.json"
@@ -50,9 +50,20 @@ if PTS_FILEPATH.exists():
             json.load(f), algorithms)
 
 
-def show_options(options_dict: dict):
-    [click.echo(message=f"{id} {text}")
-     for id, text in enumerate(options_dict.keys())]
+def show_options(options_dict: dict, with_values=False):
+    if with_values:
+        [click.echo(message=f"{id} {text} {value}")
+         for id, (text, value)
+         in enumerate(zip(options_dict.keys(), options_dict.values()))]
+    else:
+        [click.echo(message=f"{id} {text}")
+         for id, text
+         in enumerate(options_dict.keys())]
+
+
+def edit_config():
+    """WIP"""
+    show_options()
 
 
 def edit_password_translation_system():
