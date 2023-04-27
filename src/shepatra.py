@@ -14,61 +14,29 @@ from scripts.utils import json_to_translation_systems, \
 # RUN_SCRIPT_ON_RELEASE = False
 
 SCRIPT_DIR = Path(__file__).absolute().parent
+
 PTS_FILENAME = "pts.json"
+CONFIG_FILENAME = "config.json"
 I18N_DIRNAME = "i18n"
+
 PTS_FILEPATH = SCRIPT_DIR / PTS_FILENAME
+CONFIG_FILEPATH = SCRIPT_DIR / CONFIG_FILENAME
 I18N_DIRPATH = SCRIPT_DIR / I18N_DIRNAME
 
+with open(CONFIG_FILEPATH, "r") as f:
+    config = json.load(f)
 
-make_her_use_polite_words = False
-navigation_texts_candidates = {
-    False: {
-        "welcome":
-            "Welcome.",
-        "make_selection":
-            "Make a selection",
-        "which_algorithm_add_and_layered":
-            "Which algorithm add and layered?",
-        "which_trans_system_use":
-            "Select password translation system",
-        "what_name_trans_system":
-            "Name of new password translation system",
-        "input_password":
-            "Input password to be hashed",
-        "no_trans_system":
-            "I haven't learnt how to password translation, tell me.",
-        "trans_system_generated":
-            "I learned a new system: ",
-        "password_generated":
-            "hashed password is "},
-    # She would be polite if True
-    True: {
-        "welcome":
-            "Welcome.",
-        "make_selection":
-            "Make a selection",
-        "which_algorithm_add_and_layered":
-            "Which algorithm add and layered?",
-        "which_trans_system_use":
-            "Select password translation system",
-        "what_name_trans_system":
-            "Name of new password translation system",
-        "input_password":
-            "Input password to be hashed",
-        "no_trans_system":
-            "I haven't learnt how to password translation, tell me.",
-        "trans_system_generated":
-            "I learned a new system: "},
-}
-navi_txts = navigation_texts_candidates[
-    make_her_use_polite_words]
+LANGUAGE = config["language"]
+
+with open(I18N_DIRPATH / f"{LANGUAGE}.json", "r") as f:
+    navigation_texts_candidates = json.load(f)
+navi_txts = navigation_texts_candidates["standard"]
 
 algorithms = {
     "sha3-512": hashlib.sha3_512,
     "blake2b": hashlib.blake2b,
     "blake3": blake3}
 algorithms_reversed = dict(zip(algorithms.values(), algorithms.keys()))
-
 
 translation_systems = {}
 if PTS_FILEPATH.exists():
