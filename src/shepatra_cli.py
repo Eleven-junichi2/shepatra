@@ -122,6 +122,8 @@ def making_password_hashed_scene():
                 navi_texts["password_generated"] + hashed_password, fg="bright_green"
             )
             click.secho(navi_texts["copied_to_clipboard"], fg="green")
+            cancel_flag = True
+            click.echo()
 
 
 def making_hashfunc_layers_scene():
