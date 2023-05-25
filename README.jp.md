@@ -2,6 +2,8 @@
 
 [英語(English)](./README.md)
 
+※このREADMEはまだ更新されていません
+
 SHE is the PAssword TRAnslator.
 
 ## 何をしてくれるの？

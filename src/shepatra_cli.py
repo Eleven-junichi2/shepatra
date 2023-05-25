@@ -1,3 +1,5 @@
+# TODO: add comments or refactor code
+
 from pathlib import Path
 import sys
 import json
@@ -87,6 +89,11 @@ def echo_sequence_items_with_index(sequence: Sequence):
 
 
 def making_password_hashed_scene():
+    if hashfunc_layers_recipes == {}:
+        click.secho(navi_texts["no_recipe"], fg="bright_red")
+        making_hashfunc_layers_scene()
+        if hashfunc_layers_recipes == {}:
+            return
     cancel_flag = False
     options = (navi_texts["cancel"], *tuple(hashfunc_layers_recipes.keys()))
     while not cancel_flag:

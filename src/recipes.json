@@ -1,1 +1,1 @@
-{"aa": {"recipe": ["BLAKE2b", "BLAKE2b"], "is_variable_length_algorithm_only": false}}
+{"aaa": {"recipe": ["SHA3_312", "SHA3_312", "SHA3_312"], "is_variable_length_algorithm_only": false}}

@@ -7,7 +7,7 @@
         "which_recipe_would_you_like": "どの組み合わせを使いたいの",
         "what_name_trans_system": "名前をつけてください",
         "input_password": "ハッシュ化するパスワードを入力してください",
-        "no_trans_system": "その前に、アルゴリズムを組ませてね",
+        "no_recipe": "その前に、アルゴリズムを組ませてね",
         "recipe_generated": "覚えとくね",
         "password_generated": "その心は、",
         "copied_to_clipboard": "（クリップボードにコピーしといたよ）",
@@ -18,22 +18,5 @@
         "make_hashed_password": "パスワードをハッシュ化してもらう",
         "given_hashfunc_layers_recipe": "選んだアルゴリズム",
         "confirm": "これでいいかな？"
-    },
-    "kansai": {
-        "welcome": "いらっしゃい。",
-        "make_selection": "番号入力で選択してな",
-        "which_algorithm_add_and_layered": "組み合わせたいアルゴリズムは？",
-        "which_trans_system_use": "どんな感じ？",
-        "what_name_trans_system": "名を",
-        "input_password": "ハッシュ化パスワードを入力してください",
-        "no_trans_system": "その前にやな、私まだあんたのやり方知らんのよ",
-        "trans_system_generated": "覚えとくわ: ",
-        "password_generated": "その心は、",
-        "copy_to_clipboard": "（クリップボードにコピーしといたで）",
-        "cancel": "おおきに",
-        "submit": "これでまかせた",
-        "exit": "さようなら",
-        "go_to_pts_gen": "アルゴリズム組み合わせを教える",
-        "make_hashed_password": "パスワードをハッシュ化してもらう"
     }
 }
