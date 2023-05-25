@@ -7,6 +7,7 @@ name = "pypi"
 click = "*"
 blake3 = "*"
 pyperclip = "*"
+flet = "*"
 
 [dev-packages]
 flake8 = "*"
