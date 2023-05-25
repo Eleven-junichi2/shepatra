@@ -130,8 +130,8 @@ def making_hashfunc_layers_scene():
     hashfuncnames = [hashfuncname.name for hashfuncname in HashFuncName]
     options = (
         navi_texts["cancel"],
-        *hashfuncnames,
         navi_texts["submit"],
+        *hashfuncnames,
     )
     recipe = []
     display_ordered_layers = ""
@@ -154,7 +154,7 @@ def making_hashfunc_layers_scene():
                     navi_texts["given_hashfunc_layers_recipe"] + "="
                 )
             display_ordered_layers += str(order)
-        elif options[order] == navi_texts["submit"]:
+        elif options[order] == navi_texts["submit"] and recipe != []:
             click.secho(
                 f'{navi_texts["given_hashfunc_layers_recipe"]}:', fg="bright_blue"
             )

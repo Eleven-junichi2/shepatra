@@ -9,6 +9,8 @@ class HashFuncName(Enum):
     SHA3_312 = "sha3-512"
     BLAKE2b = "blake2b"
     BLAKE3 = "blake3"
+    SHAKE_128 = "shake-128"
+    SHAKE_256 = "shake-256"
 
 
 HASHFUNC_DICT = {
