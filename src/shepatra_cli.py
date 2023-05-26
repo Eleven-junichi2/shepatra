@@ -32,7 +32,9 @@ with open(SCRIPT_DIR / CONFIG_FILENAME, "r") as f:
 
 # -load i18n text-
 LANGUAGE = config["language"]
-with open(SCRIPT_DIR / I18N_DIRNAME / f"{LANGUAGE}.json", "r", encoding="utf-8") as f:
+with open(
+    SCRIPT_DIR / I18N_DIRNAME / "cli" / f"{LANGUAGE}.json", "r", encoding="utf-8"
+) as f:
     navi_texts_candidates: dict = json.load(f)
 # --
 
