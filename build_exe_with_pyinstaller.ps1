@@ -1,5 +1,6 @@
 # -build exe-
 pyinstaller shepatra_cli.spec
+pyinstaller shepatra_gui.spec
 # --
 
 # -copy config and i18n files-
