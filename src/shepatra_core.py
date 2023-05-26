@@ -18,6 +18,8 @@ HASHFUNC_DICT = {
     HashFuncName.SHA3_312: hashlib.sha3_512,
     HashFuncName.BLAKE2b: hashlib.blake2b,
     HashFuncName.BLAKE3: blake3,
+    HashFuncName.SHAKE_128: hashlib.shake_128,
+    HashFuncName.SHAKE_256: hashlib.shake_256,
 }
 
 HashFuncLayers = Generator[Callable, Callable, Any]
@@ -64,19 +66,15 @@ def load_recipedict_from_json(filepath) -> HashFuncLayersRecipeDict:
     return recipes
 
 
-def generate_recipe(*hashfunc_names: HashFuncName) -> HashFuncLayers:
-    if set(HASHFUNC_DICT.keys()).issuperset(set(hashfunc_names)):
-        return (HASHFUNC_DICT[hashfunc_name] for hashfunc_name in hashfunc_names)
+def generate_hashfunclayers(*recipe: HashFuncName) -> HashFuncLayers:
+    if set(HASHFUNC_DICT.keys()).issuperset(set(recipe)):
+        return (HASHFUNC_DICT[hashfunc_name] for hashfunc_name in recipe)
     else:
-        raise ValueError(
-            f"hashfunc_names(={hashfunc_names}) includes invalid hashfunc name"
-        )
+        raise ValueError(f"argument `recipe`(={recipe}) includes invalid hashfunc name")
 
 
-def hash_str_with_recipe(
-    str_to_be_hashed: str, hashfunc_layers_recipe: HashFuncLayers
-) -> str:
+def hash_str_as_hexdigest(str_to_be_hashed: str, hashfunclayers: HashFuncLayers) -> str:
     """return hexdigest() of hash value from given str"""
-    for hashfunc in hashfunc_layers_recipe:
+    for hashfunc in hashfunclayers:
         str_to_be_hashed = hashfunc(bytes(str_to_be_hashed, "utf-8")).hexdigest()
     return str_to_be_hashed

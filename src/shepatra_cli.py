@@ -9,11 +9,12 @@ import click
 
 from shepatra_core import (
     HashFuncName,
-    generate_recipe,
-    hash_str_with_recipe,
+    generate_hashfunclayers,
+    hash_str_as_hexdigest,
     load_recipedict_from_json,
     store_recipedict_to_json,
     HashFuncLayersRecipeDict,
+    HashFuncLayersRecipe,
 )
 
 # -prepare consts for file path-
@@ -43,10 +44,10 @@ navi_texts = navi_texts_candidates[navi_speaker_style]
 # --
 
 
-# -prepare hashfunc_layers_recipes-
-hashfunc_layers_recipes = HashFuncLayersRecipeDict()
+# -prepare recipedict-
+recipedict = HashFuncLayersRecipeDict()
 if Path(SCRIPT_DIR / HASHFUNC_LAYERS_RECIPES_FILENAME).exists():
-    hashfunc_layers_recipes = load_recipedict_from_json(
+    recipedict = load_recipedict_from_json(
         SCRIPT_DIR / HASHFUNC_LAYERS_RECIPES_FILENAME
     )
 # --
@@ -57,13 +58,13 @@ def echo_sequence_items_with_index(sequence: Sequence):
 
 
 def making_password_hashed_scene():
-    if hashfunc_layers_recipes == {}:
+    if recipedict == {}:
         click.secho(navi_texts["no_recipe"], fg="bright_red")
-        making_hashfunc_layers_scene()
-        if hashfunc_layers_recipes == {}:
+        making_recipe_scene()
+        if recipedict == {}:
             return
     cancel_flag = False
-    options = (navi_texts["cancel"], *tuple(hashfunc_layers_recipes.keys()))
+    options = (navi_texts["cancel"], *tuple(recipedict.keys()))
     while not cancel_flag:
         echo_sequence_items_with_index(options)
         order = click.prompt(
@@ -74,15 +75,15 @@ def making_password_hashed_scene():
         if options[order] == navi_texts["cancel"]:
             cancel_flag = True
             click.echo()
-        elif options[order] in hashfunc_layers_recipes.keys():
+        elif options[order] in recipedict.keys():
             click.secho(
                 navi_texts["given_hashfunc_layers_recipe"] + ": " + options[order],
                 fg="bright_blue",
             )
             password = click.prompt(navi_texts["input_password"])
-            hashed_password = hash_str_with_recipe(
+            hashed_password = hash_str_as_hexdigest(
                 password,
-                generate_recipe(*hashfunc_layers_recipes[options[order]]["recipe"]),
+                generate_hashfunclayers(*recipedict[options[order]]["recipe"]),
             )
             click.secho(
                 navi_texts["password_generated"] + hashed_password, fg="bright_green"
@@ -92,58 +93,54 @@ def making_password_hashed_scene():
             click.echo()
 
 
-def making_hashfunc_layers_scene():
-    hashfuncnames = [hashfuncname.name for hashfuncname in HashFuncName]
+def making_recipe_scene():
+    hashfuncnames_to_display = [hashfuncname.name for hashfuncname in HashFuncName]
     options = (
         navi_texts["cancel"],
         navi_texts["submit"],
-        *hashfuncnames,
+        *hashfuncnames_to_display,
     )
-    recipe = []
-    display_ordered_layers = ""
+    recipe = HashFuncLayersRecipe(recipe=[], is_variable_length_algorithm_only=False)
+    hash_func_choices_display = ""  # str to display hash func choices
     cancel_flag = False
     while not cancel_flag:
         echo_sequence_items_with_index(options)
         order = click.prompt(
             navi_texts["which_algorithm_add_and_layered"]
-            + f"({click.style(display_ordered_layers, fg='bright_blue')})",
+            + f"({click.style(hash_func_choices_display, fg='bright_blue')})",
             type=int,
             default=0,
         )
         if options[order] == navi_texts["cancel"]:
             cancel_flag = True
             click.echo()
-        elif options[order] in hashfuncnames:
-            recipe.append(options[order])
-            if display_ordered_layers == "":
-                display_ordered_layers += (
+        elif options[order] in hashfuncnames_to_display:
+            recipe["recipe"].append(HashFuncName[options[order]])
+            if hash_func_choices_display == "":
+                hash_func_choices_display += (
                     navi_texts["given_hashfunc_layers_recipe"] + "="
                 )
-            display_ordered_layers += str(order)
+            hash_func_choices_display += str(order)
         elif options[order] == navi_texts["submit"] and recipe != []:
             click.secho(
                 f'{navi_texts["given_hashfunc_layers_recipe"]}:', fg="bright_blue"
             )
+            # -print hash func choices-
             [
-                click.secho(f"  {hashfuncname}", fg="bright_blue")
-                for hashfuncname in recipe
+                click.secho(f"  {hashfuncname.name}", fg="bright_blue")
+                for hashfuncname in recipe["recipe"]
             ]
+            # ---
             if click.confirm(navi_texts["confirm"], default=True):
                 recipe_name = click.prompt(navi_texts["what_name_trans_system"])
-                hashfunc_layers_recipe = [
-                    HashFuncName[hashfuncname] for hashfuncname in recipe
-                ]
-                hashfunc_layers_recipes[recipe_name] = {
-                    "recipe": hashfunc_layers_recipe,
-                    "is_variable_length_algorithm_only": False,
-                }
+                recipedict[recipe_name] = recipe
                 click.secho(
                     navi_texts["recipe_generated"] + ": " + recipe_name,
                     fg="bright_green",
                 )
                 store_recipedict_to_json(
                     SCRIPT_DIR / HASHFUNC_LAYERS_RECIPES_FILENAME,
-                    hashfunc_layers_recipes,
+                    recipedict,
                 )
             cancel_flag = True
             click.echo()
@@ -168,7 +165,7 @@ def title_scene():
             making_password_hashed_scene()
         elif options[order] == navi_texts["go_to_recipe_making"]:
             click.echo()
-            making_hashfunc_layers_scene()
+            making_recipe_scene()
 
 
 if __name__ == "__main__":
