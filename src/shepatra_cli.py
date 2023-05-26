@@ -45,7 +45,9 @@ class HashFuncLayersRecipe(TypedDict):
     is_variable_length_algorithm_only: bool
 
 
-def store_hashfunc_layers_recipes_to_json(recipes: dict[str, HashFuncLayersRecipe]):
+def store_hashfunc_layers_recipes_to_json(
+    filepath, recipes: dict[str, HashFuncLayersRecipe]
+):
     dict_to_store = {}
     for recipe_name, hashfunclayers_recipe in recipes.items():
         dict_to_store[recipe_name] = {
@@ -56,12 +58,12 @@ def store_hashfunc_layers_recipes_to_json(recipes: dict[str, HashFuncLayersRecip
                 "is_variable_length_algorithm_only"
             ],
         }
-    with open(SCRIPT_DIR / HASHFUNC_LAYERS_RECIPES_FILENAME, "w") as f:
+    with open(filepath, "w") as f:
         json.dump(dict_to_store, f)
 
 
-def load_hashfunc_layers_recipes_from_json() -> dict[str, HashFuncLayersRecipe]:
-    with open(SCRIPT_DIR / HASHFUNC_LAYERS_RECIPES_FILENAME, "r") as f:
+def load_hashfunc_layers_recipes_from_json(filepath) -> dict[str, HashFuncLayersRecipe]:
+    with open(filepath, "r") as f:
         recipes_in_jsondict: dict = json.load(f)
     recipes = {}
     for recipe_name, hashfunclayers_recipe in recipes_in_jsondict.items():
@@ -80,7 +82,9 @@ def load_hashfunc_layers_recipes_from_json() -> dict[str, HashFuncLayersRecipe]:
 # -prepare hashfunc_layers_recipes-
 hashfunc_layers_recipes: dict[str, HashFuncLayersRecipe] = {}
 if Path(SCRIPT_DIR / HASHFUNC_LAYERS_RECIPES_FILENAME).exists():
-    hashfunc_layers_recipes = load_hashfunc_layers_recipes_from_json()
+    hashfunc_layers_recipes = load_hashfunc_layers_recipes_from_json(
+        SCRIPT_DIR / HASHFUNC_LAYERS_RECIPES_FILENAME
+    )
 # --
 
 
@@ -175,7 +179,10 @@ def making_hashfunc_layers_scene():
                     navi_texts["recipe_generated"] + ": " + recipe_name,
                     fg="bright_green",
                 )
-                store_hashfunc_layers_recipes_to_json(hashfunc_layers_recipes)
+                store_hashfunc_layers_recipes_to_json(
+                    SCRIPT_DIR / HASHFUNC_LAYERS_RECIPES_FILENAME,
+                    hashfunc_layers_recipes,
+                )
             cancel_flag = True
             click.echo()
 

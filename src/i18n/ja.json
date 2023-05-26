@@ -2,9 +2,9 @@
     "standard": {
         "welcome": "いらっしゃいませ。",
         "make_selection": "番号を入力して選択してね",
-        "which_algorithm_add_and_layered": "組み合わせるアルゴリズムは？",
+        "which_algorithm_add_and_layered": "重ねるハッシュ関数の組み合わせは？",
         "ask_is_variable_length_hash": "パスワードの長さは指定できる？(`指定できる`の場合、ハッシュ関数は可変長をサポートするもののみ使えます)",
-        "which_recipe_would_you_like": "どの組み合わせを使いたいの",
+        "which_recipe_would_you_like": "どのハッシュ関数を重ねるの",
         "what_name_trans_system": "名前をつけてください",
         "input_password": "ハッシュ化するパスワードを入力してください",
         "no_recipe": "その前に、アルゴリズムを組ませてね",
@@ -14,7 +14,7 @@
         "cancel": "やめる",
         "submit": "決定",
         "exit": "終了",
-        "go_to_recipe_making": "アルゴリズム組み合わせを教える",
+        "go_to_recipe_making": "重ねるハッシュ関数の組み合わせを教える",
         "make_hashed_password": "パスワードをハッシュ化してもらう",
         "given_hashfunc_layers_recipe": "選んだアルゴリズム",
         "confirm": "これでいいかな？"
