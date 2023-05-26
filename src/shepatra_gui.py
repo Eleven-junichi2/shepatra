@@ -49,15 +49,7 @@ if Path(SCRIPT_DIR / HASHFUNC_LAYERS_RECIPES_FILENAME).exists():
 # --
 
 
-def main(page: ft.Page):
-    # -configure window-
-    page.title = "Shepatra"
-    page.window_width = 522
-    page.window_height = 378
-    page.window_resizable = False
-    # --
-
-    # -setup view: /making_hashed_password-
+def making_hashed_password_view(route) -> ft.View:
     def make_password_hashed_on_enter(e):
         if recipedict_dropdown.value is None:
             recipedict_dropdown.error_text = navi_texts[
@@ -109,8 +101,8 @@ def main(page: ft.Page):
         multiline=True,
         expand=True,
     )
-    making_hashed_password_view = ft.View(
-        route="/making_hashed_password",
+    return ft.View(
+        route=route,
         controls=[
             ft.Column(
                 controls=[
@@ -126,10 +118,24 @@ def main(page: ft.Page):
             hash_outputfield,
         ],
     )
+
+
+def making_recipe_view(route) -> ft.View:
+    # TODO: make this
+    return ft.View(route=route, controls=[])
+
+
+def main(page: ft.Page):
+    # -configure window-
+    page.title = "Shepatra"
+    page.window_width = 522
+    page.window_height = 378
+    page.window_resizable = False
     # --
 
     VIEW_LIST = [
-        making_hashed_password_view,
+        making_hashed_password_view("/making_hashed_password"),
+        making_recipe_view("/making_recipe"),
     ]
 
     page.add(*VIEW_LIST)
@@ -137,13 +143,14 @@ def main(page: ft.Page):
     def on_route_change(handler: ft.RouteChangeEvent):
         troute = ft.TemplateRoute(handler.route)
         page.views.clear()
-        for view_index, view in enumerate(VIEW_LIST):
+        for view in VIEW_LIST:
             if troute.match(view.route):
                 page.views.append(view)
         page.update()
 
     page.on_route_change = on_route_change
-    page.go("/making_hashed_password")
+    # page.go("/making_hashed_password")
+    page.go("/making_recipe")
     page.update()
 
 

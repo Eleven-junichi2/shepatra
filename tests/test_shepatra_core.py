@@ -34,7 +34,6 @@ def test_integration():
 
 
 def test_store_recipedict_to_json(tmpdir: py.path.local):
-    # TODO: here
     recipe_path = tmpdir.join("recipe.json")
     recipedict = HashFuncLayersRecipeDict()
     recipedict["test"] = HashFuncLayersRecipe(

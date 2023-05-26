@@ -1,5 +1,3 @@
-# TODO: add comments or refactor code
-
 from pathlib import Path
 import sys
 import json
