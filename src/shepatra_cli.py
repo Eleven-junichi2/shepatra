@@ -6,6 +6,7 @@ import json
 from typing import Sequence
 
 import click
+import pyperclip
 
 from shepatra_core import (
     HashFuncName,
@@ -89,6 +90,7 @@ def making_password_hashed_scene():
                 navi_texts["password_generated"] + hashed_password, fg="bright_green"
             )
             click.secho(navi_texts["copied_to_clipboard"], fg="green")
+            pyperclip.copy(hashed_password)
             cancel_flag = True
             click.echo()
 
