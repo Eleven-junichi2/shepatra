@@ -3,14 +3,17 @@
 from pathlib import Path
 import sys
 import json
-from typing import Sequence, TypedDict
+from typing import Sequence
 
 import click
 
 from shepatra_core import (
     HashFuncName,
-    generate_hashfunc_layers,
-    hash_str_with_hashfunc_layers,
+    generate_recipe,
+    hash_str_with_recipe,
+    load_recipedict_from_json,
+    store_recipedict_to_json,
+    HashFuncLayersRecipeDict,
 )
 
 # -prepare consts for file path-
@@ -40,49 +43,10 @@ navi_texts = navi_texts_candidates[navi_speaker_style]
 # --
 
 
-class HashFuncLayersRecipe(TypedDict):
-    recipe: list[HashFuncName]
-    is_variable_length_algorithm_only: bool
-
-
-def store_hashfunc_layers_recipes_to_json(
-    filepath, recipes: dict[str, HashFuncLayersRecipe]
-):
-    dict_to_store = {}
-    for recipe_name, hashfunclayers_recipe in recipes.items():
-        dict_to_store[recipe_name] = {
-            "recipe": [
-                hashfuncname.name for hashfuncname in hashfunclayers_recipe["recipe"]
-            ],
-            "is_variable_length_algorithm_only": hashfunclayers_recipe[
-                "is_variable_length_algorithm_only"
-            ],
-        }
-    with open(filepath, "w") as f:
-        json.dump(dict_to_store, f)
-
-
-def load_hashfunc_layers_recipes_from_json(filepath) -> dict[str, HashFuncLayersRecipe]:
-    with open(filepath, "r") as f:
-        recipes_in_jsondict: dict = json.load(f)
-    recipes = {}
-    for recipe_name, hashfunclayers_recipe in recipes_in_jsondict.items():
-        recipes[recipe_name] = {
-            "recipe": [
-                HashFuncName[hashfuncname]
-                for hashfuncname in hashfunclayers_recipe["recipe"]
-            ],
-            "is_variable_length_algorithm_only": hashfunclayers_recipe[
-                "is_variable_length_algorithm_only"
-            ],
-        }
-    return recipes
-
-
 # -prepare hashfunc_layers_recipes-
-hashfunc_layers_recipes: dict[str, HashFuncLayersRecipe] = {}
+hashfunc_layers_recipes = HashFuncLayersRecipeDict()
 if Path(SCRIPT_DIR / HASHFUNC_LAYERS_RECIPES_FILENAME).exists():
-    hashfunc_layers_recipes = load_hashfunc_layers_recipes_from_json(
+    hashfunc_layers_recipes = load_recipedict_from_json(
         SCRIPT_DIR / HASHFUNC_LAYERS_RECIPES_FILENAME
     )
 # --
@@ -116,11 +80,9 @@ def making_password_hashed_scene():
                 fg="bright_blue",
             )
             password = click.prompt(navi_texts["input_password"])
-            hashed_password = hash_str_with_hashfunc_layers(
+            hashed_password = hash_str_with_recipe(
                 password,
-                generate_hashfunc_layers(
-                    *hashfunc_layers_recipes[options[order]]["recipe"]
-                ),
+                generate_recipe(*hashfunc_layers_recipes[options[order]]["recipe"]),
             )
             click.secho(
                 navi_texts["password_generated"] + hashed_password, fg="bright_green"
@@ -179,7 +141,7 @@ def making_hashfunc_layers_scene():
                     navi_texts["recipe_generated"] + ": " + recipe_name,
                     fg="bright_green",
                 )
-                store_hashfunc_layers_recipes_to_json(
+                store_recipedict_to_json(
                     SCRIPT_DIR / HASHFUNC_LAYERS_RECIPES_FILENAME,
                     hashfunc_layers_recipes,
                 )
