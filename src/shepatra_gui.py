@@ -54,16 +54,19 @@ if Path(SCRIPT_DIR / HASHFUNC_LAYERS_RECIPES_FILENAME).exists():
 # --
 
 
-class MakingHashedPasswordScene(ft.UserControl):
-    def __init__(self):
-        super().__init__()
+class SettingsScene(ft.UserControl):
+    def build(self):
+        return ft.Container(padding=10, content=ft.Column([]))
 
+
+class MakingHashedPasswordScene(ft.UserControl):
     def build(self):
         self.recipe_dropdown = ft.Dropdown(
             options=[
                 ft.dropdown.Option(key=recipe_name, text=recipe_name)
                 for recipe_name in recipedict
-            ]
+            ],
+            hint_text=navi_texts["select_algorithm"],
         )
         self.password_textfield = ft.TextField(
             hint_text=navi_texts["submit_with_enter"],
@@ -73,9 +76,10 @@ class MakingHashedPasswordScene(ft.UserControl):
             hint_text=navi_texts["hash_value_output_is_here"], read_only=True
         )
         return ft.Container(
+            padding=10,
             content=ft.Column(
                 [self.recipe_dropdown, self.password_textfield, self.result_textfield]
-            )
+            ),
         )
 
     def make_password_hashed(self):
@@ -114,8 +118,23 @@ def main(page: ft.Page):
     # -configure window-
     page.title = "Shepatra"
     # --
-
-    page.add(MakingHashedPasswordScene())
+    tabs = ft.Tabs(
+        selected_index=0,
+        tabs=[
+            ft.Tab(
+                text=navi_texts["make_hashed_password"],
+                content=MakingHashedPasswordScene(),
+                icon=ft.icons.KEY
+            ),
+            ft.Tab(
+                text=navi_texts["settings"],
+                content=SettingsScene(),
+                icon=ft.icons.SETTINGS
+            )
+        ],
+        expand=1,
+    )
+    page.add(tabs)
     page.update()
 
 

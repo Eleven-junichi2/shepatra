@@ -26,6 +26,9 @@
         "make_hashed_password": "パスワードをハッシュ化する",
         "given_hashfunc_layers_recipe": "選んだアルゴリズム",
         "select_algorithm": "アルゴリズムを選択",
-        "confirm": "これでいいかな？"
+        "confirm": "これでいいかな？",
+        "switch_darktheme": "ダークテーマにする",
+        "switch_lighttheme": "ライトテーマにする",
+        "settings": "設定"
     }
 }
