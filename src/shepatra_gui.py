@@ -163,17 +163,8 @@ def making_recipe_tab(page: ft.Page) -> ft.Tab:
         listview_for_recipe.controls.append(recipelist_item)
         listview_for_recipe.update()
 
-    def open_submit_dialog_on_click(e):
-        if new_recipe["recipe"]:
-            page.dialog = submit_dialog
-            submit_dialog.open = True
-            page.update()
-
-    def close_submit_dialog_on_click(e):
-        submit_dialog.open = False
-        page.update()
-
     def recipe_confirmed_on_click(e):
+        print(recipe_name_inputfield.value)
         if recipe_name_inputfield.value:
             recipedict[recipe_name_inputfield.value] = new_recipe
             store_recipedict_to_json(
@@ -182,18 +173,55 @@ def making_recipe_tab(page: ft.Page) -> ft.Tab:
             )
             recipedict_dropdown.options = recipedict_options_for_dropdown()
             recipedict_dropdown.update()
-            submit_dialog.title = ft.Text(
-                navi_texts["recipe_generated"], color=ft.colors.GREEN_ACCENT_200
-            )
-            submit_dialog.actions = [
-                ft.ElevatedButton(
-                    navi_texts["close"],
-                    expand=True,
-                    on_click=close_submit_dialog_on_click,
-                ),
-            ]
+            update_to_recipe_confirmed_dialog(submit_dialog)
             page.update()
-            recipe_name_inputfield.value = None
+
+    recipe_name_inputfield = ft.TextField(
+        hint_text=navi_texts["name_of_recipe"], on_submit=recipe_confirmed_on_click
+    )
+
+    def make_submit_dialog() -> ft.AlertDialog:
+        return ft.AlertDialog(
+            title=ft.Text(navi_texts["give_name_to_recipe"]),
+            actions=[
+                recipe_name_inputfield,
+                ft.ElevatedButton(
+                    navi_texts["submit"],
+                    expand=True,
+                    on_click=recipe_confirmed_on_click,
+                ),
+            ],
+        )
+
+    def update_to_submit_dialog(dialog: ft.AlertDialog):
+        dialog = make_submit_dialog()
+        dialog.update
+
+    submit_dialog = make_submit_dialog()
+
+    def open_submit_dialog_on_click(e):
+        if new_recipe["recipe"]:
+            page.dialog = submit_dialog
+            submit_dialog.open = True
+            page.update()
+
+    def close_submit_dialog_on_click(e):
+        submit_dialog.open = False
+        update_to_submit_dialog(submit_dialog)
+        page.update()
+
+    def update_to_recipe_confirmed_dialog(dialog: ft.AlertDialog) -> ft.AlertDialog:
+        dialog.title = ft.Text(
+            navi_texts["recipe_generated"], color=ft.colors.GREEN_ACCENT_200
+        )
+        dialog.actions = [
+            ft.ElevatedButton(
+                navi_texts["close"],
+                expand=True,
+                on_click=close_submit_dialog_on_click,
+            ),
+        ]
+        dialog.update()
 
     algorithm_dropdown = ft.Dropdown(
         options=[
@@ -216,18 +244,6 @@ def making_recipe_tab(page: ft.Page) -> ft.Tab:
     listview_for_recipe = ft.ListView(
         height=200,
         auto_scroll=True,
-    )
-    recipe_name_inputfield = ft.TextField(
-        hint_text=navi_texts["name_of_recipe"], on_submit=recipe_confirmed_on_click
-    )
-    submit_dialog = ft.AlertDialog(
-        title=ft.Text(navi_texts["give_name_to_recipe"]),
-        actions=[
-            recipe_name_inputfield,
-            ft.ElevatedButton(
-                navi_texts["submit"], expand=True, on_click=recipe_confirmed_on_click
-            ),
-        ],
     )
     return ft.Tab(
         text=navi_texts["go_to_recipe_making"],
