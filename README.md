@@ -1,4 +1,4 @@
 # Shepatra
 
-[Japanese（日本語）](./README.md)
+[Japanese（日本語）](./README.jp.md)
 
